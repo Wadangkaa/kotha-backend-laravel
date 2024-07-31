@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRegisterRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Utilities\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
 {
@@ -36,5 +40,16 @@ class AuthenticationController extends Controller
         $user = auth()->user();
         $user->tokens()->delete();
         return ApiResponse::ok(null, 'logout successful');
+    }
+
+    public function register(UserRegisterRequest $request): ApiResponse
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+
+        return ApiResponse::created(UserResource::make($user), 'user registered');
     }
 }
