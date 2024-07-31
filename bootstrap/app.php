@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function () {
-            Route::middleware(['api'])
+            Route::middleware(['api', 'auth:sanctum'])
                 ->prefix('api/admin')
                 ->group(base_path('routes/admin.php'));
         }
@@ -26,6 +27,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\Throwable $e, Request $request) {
             if ($request->is('api/*')) {
+                if ($e instanceof NotFoundHttpException) {
+                    return ApiResponse::notFound();
+                }
                 if ($e instanceof ValidationException) {
                     return ApiResponse::validationFailed($e);
                 }

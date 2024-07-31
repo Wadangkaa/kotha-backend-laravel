@@ -5,6 +5,7 @@ namespace App\Utilities;
 
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Validation\ValidationException;
 
 class ApiResponse implements Responsable
@@ -45,6 +46,12 @@ class ApiResponse implements Responsable
 
     public static function ok($data, string $message = 'Data fetched successfully'): static
     {
+        if ($data instanceof ResourceCollection) {
+            $data = $data->response()->getData(true);
+        }
+//        else {
+//            $data = $data->toArray(request());
+//        }
         return new static(200, $data, $message);
     }
 
