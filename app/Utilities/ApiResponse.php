@@ -49,9 +49,6 @@ class ApiResponse implements Responsable
         if ($data instanceof ResourceCollection) {
             $data = $data->response()->getData(true);
         }
-//        else {
-//            $data = $data->toArray(request());
-//        }
         return new static(200, $data, $message);
     }
 

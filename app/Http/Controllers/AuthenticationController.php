@@ -20,11 +20,15 @@ class AuthenticationController extends Controller
         ]);
 
         $check = Auth::attempt($request->only(['email', 'password']));
+
         if (!$check) {
             return ApiResponse::unauthorized('Invalid credentials provided');
         }
         return ApiResponse::ok(
-            ['token' => Auth::user()->createToken('token')->plainTextToken],
+            [
+                'user' => UserResource::make(auth()->user()),
+                'token' => Auth::user()->createToken('token')->plainTextToken
+            ],
             'Login in successful'
         );
     }
