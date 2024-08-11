@@ -11,7 +11,7 @@ class StoreFacilityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class StoreFacilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'bed_room' => ['required', 'numeric'],
+            'kitchen' => ['required', 'boolean'],
+            'bathroom' => ['required', 'numeric'],
+            'parking' => ['required', 'boolean'],
+            'balcony' => ['required', 'boolean'],
+            'rental_floor' => ['required', 'exists:rental_floors,id'],
+            'water_facility' => ['required', 'boolean'],
         ];
     }
 }

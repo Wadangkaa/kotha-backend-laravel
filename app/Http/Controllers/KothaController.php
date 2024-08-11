@@ -7,6 +7,7 @@ use App\Models\Kotha;
 use App\Http\Requests\StoreKothaRequest;
 use App\Http\Requests\UpdateKothaRequest;
 use App\Utilities\ApiResponse;
+use Illuminate\Support\Facades\DB;
 
 class KothaController extends Controller
 {
@@ -34,14 +35,11 @@ class KothaController extends Controller
      */
     public function store(StoreKothaRequest $request)
     {
-        $kotha = Kotha::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'price' => $request->price,
-            'negotiable' => $request->negotiable,
-            'purpose' => $request->purpose,
-        ]);
+        DB::beginTransaction();
+        $kotha = Kotha::create($request->validated());
+        $kotha->facility()->create($request->validated());
+        $kotha->contact()->create($request->all());
+        DB::commit();
 
         return ApiResponse::created(KothaResource::make($kotha));
     }
