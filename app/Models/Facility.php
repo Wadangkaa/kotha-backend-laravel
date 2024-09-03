@@ -18,4 +18,14 @@ class Facility extends Model
         'rental_floor',
         'water_facility',
     ];
+
+    public function kotha()
+    {
+        return $this->belongsTo(Kotha::class);
+    }
+
+    public function rentalFloor()
+    {
+        return $this->belongsTo(RentalFloor::class, 'rental_floor');
+    }
 }

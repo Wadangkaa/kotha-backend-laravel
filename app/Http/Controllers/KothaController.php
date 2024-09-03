@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\KothaDetailResource;
 use App\Http\Resources\KothaResource;
 use App\Models\Kotha;
 use App\Http\Requests\StoreKothaRequest;
@@ -49,7 +50,7 @@ class KothaController extends Controller
      */
     public function show(Kotha $kotha)
     {
-        return ApiResponse::ok(KothaResource::make($kotha));
+        return ApiResponse::ok(KothaDetailResource::make($kotha));
     }
 
     /**

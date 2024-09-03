@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('kothas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->json('description')->nullable();
             $table->foreignId('category_id')->constrained('categories');
             $table->double('price', 10, 2);
             $table->boolean('negotiable')->default(true);
             $table->string('purpose')->default('rent')->comment('rent | sale | lease');
+            $table->foreignId('district_id')->constrained('nepal_addresses');
             $table->timestamps();
         });
     }

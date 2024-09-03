@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Kotha;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class ContactFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'number' => $this->faker->phoneNumber,
+            'alternative_number' => $this->faker->phoneNumber,
+            'longitude' => $this->faker->longitude,
+            'latitude' => $this->faker->latitude,
         ];
     }
 }

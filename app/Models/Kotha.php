@@ -6,6 +6,7 @@ use App\Enums\KothaPurposeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Kotha extends Model
@@ -22,7 +23,8 @@ class Kotha extends Model
     ];
 
     protected $casts = [
-        'purpose' => KothaPurposeEnum::class
+        'purpose' => KothaPurposeEnum::class,
+        'description' => 'array'
     ];
 
     public function category(): BelongsTo
@@ -37,5 +39,15 @@ class Kotha extends Model
     public function contact(): HasOne
     {
         return $this->hasOne(Contact::class, 'kotha_id');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(Image::class, 'kotha_id');
+    }
+
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(NepalAddress::class, 'district_id');
     }
 }
