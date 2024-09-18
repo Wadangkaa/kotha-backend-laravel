@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('nepal_addresses', function (Blueprint $table) {
             $table->id();
-            $table->integer('name');
+            $table->string('name');
             $table->string('type')->comment('1 PROVINCE, 2 DISTRICT');
             $table->foreignId('parent_id')->nullable()->constrained('nepal_addresses');
             $table->timestamps();

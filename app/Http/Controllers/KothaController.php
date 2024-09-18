@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ContactResource;
 use App\Http\Resources\KothaDetailResource;
 use App\Http\Resources\KothaResource;
 use App\Models\Kotha;
@@ -9,6 +10,7 @@ use App\Http\Requests\StoreKothaRequest;
 use App\Http\Requests\UpdateKothaRequest;
 use App\Utilities\ApiResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class KothaController extends Controller
 {
@@ -76,5 +78,12 @@ class KothaController extends Controller
     public function destroy(Kotha $kotha)
     {
         //
+    }
+
+    public function searchKothaInMap(Request $request)
+    {
+        $contacts = \App\Models\Contact::withinRadius($request->center['lat'], $request->center['lng'], $request->radius)
+            ->get();
+        return ApiResponse::ok(ContactResource::collection($contacts));
     }
 }
