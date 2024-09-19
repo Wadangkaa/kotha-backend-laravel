@@ -9,6 +9,7 @@ use App\Models\Kotha;
 use App\Http\Requests\StoreKothaRequest;
 use App\Http\Requests\UpdateKothaRequest;
 use App\Utilities\ApiResponse;
+use App\Utilities\ImageUploader;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -39,7 +40,20 @@ class KothaController extends Controller
     public function store(StoreKothaRequest $request)
     {
         DB::beginTransaction();
-        $kotha = Kotha::create($request->validated());
+        $kotha = Kotha::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category_id' => $request->category,
+            'district_id' => $request->district,
+            'price' => $request->price,
+            'negotiable' => $request->negotiable,
+            'purpose' => $request->purpose,
+            'user_id' => 1
+        ]);
+        foreach ($request->images as $key => $image) {
+            $path = ImageUploader::upload($image, 'kotha');
+            $kotha->images()->create(['image_url' => $path]);
+        }
         $kotha->facility()->create($request->validated());
         $kotha->contact()->create($request->all());
         DB::commit();

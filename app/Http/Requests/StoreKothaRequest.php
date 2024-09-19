@@ -26,11 +26,12 @@ class StoreKothaRequest extends FormRequest
     {
         return [
             'title' => ['required'],
-            'description' => ['nullable'],
-            'category_id' => ['numeric', 'exists:categories,id'],
+            'description' => ['nullable', 'string'],
+            'category' => ['numeric', 'exists:categories,id'],
             'price' => ['numeric'],
-            'negotiable' => ['boolean'],
+            'negotiable' => ['required', 'boolean'],
             'purpose' => new Enum(KothaPurposeEnum::class),
+            'images.*' => ['mimes:jpg,png,jpeg,gif'],
 
             // facilities Validation
             'bed_room' => ['required', 'numeric'],

@@ -20,11 +20,12 @@ class Kotha extends Model
         'price',
         'negotiable',
         'purpose',
+        'district_id',
+        'user_id',
     ];
 
     protected $casts = [
         'purpose' => KothaPurposeEnum::class,
-        'description' => 'array'
     ];
 
     public function category(): BelongsTo
