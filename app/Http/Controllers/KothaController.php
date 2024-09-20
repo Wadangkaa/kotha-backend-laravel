@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\KothaPurposeEnum;
 use App\Http\Resources\ContactResource;
 use App\Http\Resources\KothaDetailResource;
 use App\Http\Resources\KothaResource;
 use App\Models\Kotha;
 use App\Http\Requests\StoreKothaRequest;
 use App\Http\Requests\UpdateKothaRequest;
+use App\Services\RecommendationService;
 use App\Utilities\ApiResponse;
 use App\Utilities\ImageUploader;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
 class KothaController extends Controller
 {
@@ -106,5 +109,24 @@ class KothaController extends Controller
     {
         $kothas = Kotha::where('user_id', auth()->id())->latest()->paginate(10);
         return ApiResponse::ok(KothaResource::collection($kothas));
+    }
+
+    public function recommendation(Request $request)
+    {
+        $request->validate([
+            'category' => 'required|exists:categories,id',
+            'district' => 'required|exists:nepal_addresses,id',
+            'kitchen' => 'required|in:1,0',
+            'max_price' => 'required|numeric',
+            'min_price' => 'required|numeric',
+            'negotiable' => 'required|in:1,0',
+            'parking' => 'required|in:1,0',
+            'purpose' => ['required', new Enum(KothaPurposeEnum::class)],
+            'water_facility' => 'required|in:1,0'
+        ]);
+        $recommendationService = new RecommendationService($request->toArray());
+        $recommendatedRooms = $recommendationService->recommendedRooms(5);
+
+        return ApiResponse::ok(KothaResource::collection($recommendatedRooms));
     }
 }
