@@ -48,7 +48,7 @@ class KothaController extends Controller
             'price' => $request->price,
             'negotiable' => $request->negotiable,
             'purpose' => $request->purpose,
-            'user_id' => 1
+            'user_id' => auth()->id()
         ]);
         foreach ($request->images as $key => $image) {
             $path = ImageUploader::upload($image, 'kotha');
@@ -91,7 +91,8 @@ class KothaController extends Controller
      */
     public function destroy(Kotha $kotha)
     {
-        //
+        $kotha->delete();
+        return ApiResponse::ok([], 'Kotha deleted successfully');
     }
 
     public function searchKothaInMap(Request $request)
@@ -99,5 +100,11 @@ class KothaController extends Controller
         $contacts = \App\Models\Contact::withinRadius($request->center['lat'], $request->center['lng'], $request->radius)
             ->get();
         return ApiResponse::ok(ContactResource::collection($contacts));
+    }
+
+    public function authUserKotha(Request $request)
+    {
+        $kothas = Kotha::where('user_id', auth()->id())->latest()->paginate(10);
+        return ApiResponse::ok(KothaResource::collection($kothas));
     }
 }

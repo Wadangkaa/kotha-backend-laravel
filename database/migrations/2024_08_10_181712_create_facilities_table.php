@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('facilities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kotha_id')->constrained('kothas');
+            $table->foreignId('kotha_id')->constrained('kothas')->onDelete('cascade');
             $table->integer('bed_room')->nullable();
             $table->boolean('kitchen')->default(true);
             $table->integer('bathroom')->default(1);

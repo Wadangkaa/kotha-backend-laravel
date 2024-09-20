@@ -32,7 +32,7 @@ class ImageUploader
 	private static function validateImage($file)
 	{
 
-		$rules = ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
+		$rules = ['image', 'mimes:jpeg,png,jpg,gif',];
 
 		$validator = validator()->make(['image' => $file], ['image' => $rules]);
 
