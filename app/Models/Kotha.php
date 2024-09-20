@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\KothaPurposeEnum;
+use App\Enums\KothaStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,10 +23,12 @@ class Kotha extends Model
         'purpose',
         'district_id',
         'user_id',
+        'status',
     ];
 
     protected $casts = [
         'purpose' => KothaPurposeEnum::class,
+        'status' => KothaStatusEnum::class,
     ];
 
     public function category(): BelongsTo

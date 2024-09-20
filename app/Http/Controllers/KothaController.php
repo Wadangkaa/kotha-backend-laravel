@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\KothaPurposeEnum;
+use App\Enums\KothaStatusEnum;
 use App\Http\Resources\ContactResource;
 use App\Http\Resources\KothaDetailResource;
 use App\Http\Resources\KothaResource;
@@ -24,6 +25,7 @@ class KothaController extends Controller
     public function index()
     {
         $kothas = Kotha::with(['category'])
+            ->where('status', KothaStatusEnum::APPROVED->value)
             ->orderBy('id', 'desc')
             ->paginate(25);
         return ApiResponse::ok(KothaResource::collection($kothas));
@@ -125,8 +127,8 @@ class KothaController extends Controller
             'water_facility' => 'required|in:1,0'
         ]);
         $recommendationService = new RecommendationService($request->toArray());
-        $recommendatedRooms = $recommendationService->recommendedRooms(5);
+        $recommendedRooms = $recommendationService->recommendedRooms(4);
 
-        return ApiResponse::ok(KothaResource::collection($recommendatedRooms));
+        return ApiResponse::ok(KothaResource::collection($recommendedRooms));
     }
 }

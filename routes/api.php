@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\KothaController;
@@ -21,4 +22,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('kotha', KothaController::class, ['except' => ['index', 'show']]);
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('rental-floor', RentalFloorController::class);
+
+
+    // admin routes
+    Route::get('dashboard-stats', [AdminController::class, 'dashboardStats']);
 });

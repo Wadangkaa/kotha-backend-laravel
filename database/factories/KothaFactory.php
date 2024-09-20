@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\KothaPurposeEnum;
+use App\Enums\KothaStatusEnum;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -33,6 +34,7 @@ class KothaFactory extends Factory
             'price' => fake()->numberBetween(1000, 100000),
             'negotiable' => fake()->boolean,
             'purpose' => fake()->randomElement(KothaPurposeEnum::cases()),
+            'status' => KothaStatusEnum::APPROVED,
         ];
     }
 }

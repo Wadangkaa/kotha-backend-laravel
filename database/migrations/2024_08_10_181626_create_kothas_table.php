@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('kothas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
+            $table->integer('status')->default(1);
             $table->string('title');
             $table->longText('description')->nullable();
             $table->foreignId('category_id')->constrained('categories');
