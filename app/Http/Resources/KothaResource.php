@@ -23,6 +23,8 @@ class KothaResource extends JsonResource
             'category' => $this->whenLoaded('category', CategoryResource::make($this->category)),
             'price' => $this->price,
             'negotiable' => $this->negotiable,
+            'status' => $this->status,
+            'status_name' => $this->status?->name,
             'purpose' => $this->purpose,
             'district' => $this->district?->only('id', 'name'),
             'created_at' => $this->created_at

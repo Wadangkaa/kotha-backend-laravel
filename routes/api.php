@@ -26,4 +26,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // admin routes
     Route::get('dashboard-stats', [AdminController::class, 'dashboardStats']);
+    Route::get('admin/kotha', [AdminController::class, 'getKothas']);
+    Route::post('admin/kotha/{kotha}/response', [AdminController::class, 'response']);
 });
