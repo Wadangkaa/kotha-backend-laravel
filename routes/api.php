@@ -24,8 +24,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('rental-floor', RentalFloorController::class);
 
 
-    // admin routes
-    Route::get('dashboard-stats', [AdminController::class, 'dashboardStats']);
-    Route::get('admin/kotha', [AdminController::class, 'getKothas']);
-    Route::post('admin/kotha/{kotha}/response', [AdminController::class, 'response']);
+    // admin routes --------------------------------
+    Route::middleware(['admin'])->group(function () {
+        Route::get('dashboard-stats', [AdminController::class, 'dashboardStats']);
+        Route::get('admin/kotha', [AdminController::class, 'getKothas']);
+        Route::post('admin/kotha/{kotha}/response', [AdminController::class, 'response']);
+    });
 });
